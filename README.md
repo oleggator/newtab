@@ -26,7 +26,7 @@ For permanent installation, the extension needs to be signed by Mozilla. See [Fi
 ## Structure
 
 ```
-manifest.json   — extension manifest (MV2)
+manifest.json   — extension manifest (MV3)
 newtab.html     — new tab page markup
 newtab.css      — styles
 newtab.js       — bookmarks loading, tile rendering, folder picker
