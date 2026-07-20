@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>New Tab</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+
+  <!-- Folder picker modal -->
+  <div id="setup" class="hidden" role="dialog" aria-modal="true" aria-labelledby="setup-title">
+    <div class="setup-panel">
+      <div class="setup-header">
+        <h1 id="setup-title">Choose a Bookmarks Folder</h1>
+        <button id="close-btn" class="hidden" aria-label="Close">&times;</button>
+      </div>
+      <p>Select which folder to display as tiles on your new tab page.</p>
+      <div id="folder-tree"></div>
+      <button id="save-btn" disabled>Select a folder above</button>
+    </div>
+  </div>
+
+  <!-- Main view -->
+  <div id="main" class="hidden">
+    <button id="folder-label" title="Change folder"></button>
+    <div id="tiles-grid"></div>
+  </div>
+
+  <script src="newtab.js"></script>
+</body>
+</html>

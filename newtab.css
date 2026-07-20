@@ -1,0 +1,302 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f5f5f7;
+  --tile-bg: #ffffff;
+  --tile-hover-bg: #e8e8ed;
+  --label-color: #1d1d1f;
+  --label-muted: #6e6e73;
+  --setup-bg: rgba(0, 0, 0, 0.45);
+  --panel-bg: #ffffff;
+  --border: #d2d2d7;
+  --accent: #0071e3;
+  --folder-hover: #f0f0f5;
+  --folder-selected: #e0eeff;
+  --folder-selected-text: #0050ab;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1c1c1e;
+    --tile-bg: #2c2c2e;
+    --tile-hover-bg: #3a3a3c;
+    --label-color: #f5f5f7;
+    --label-muted: #98989d;
+    --panel-bg: #2c2c2e;
+    --border: #3a3a3c;
+    --folder-hover: #3a3a3c;
+    --folder-selected: #1a3a5c;
+    --folder-selected-text: #4db0ff;
+  }
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--label-color);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ── Setup modal ────────────────────────────────────────────── */
+
+@keyframes backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes panel-in {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
+}
+
+#setup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--setup-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 100;
+  animation: backdrop-in 0.18s ease;
+}
+
+.setup-panel {
+  background: var(--panel-bg);
+  border-radius: 18px;
+  padding: 28px 32px 28px;
+  width: 420px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: panel-in 0.2s ease;
+}
+
+.setup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.setup-header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+#close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: var(--folder-hover);
+  color: var(--label-muted);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.12s, color 0.12s;
+}
+
+#close-btn:hover {
+  background: var(--border);
+  color: var(--label-color);
+}
+
+.setup-panel p {
+  font-size: 14px;
+  color: var(--label-muted);
+  line-height: 1.5;
+}
+
+#folder-tree {
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px;
+  min-height: 160px;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.folder-item:hover {
+  background: var(--folder-hover);
+}
+
+.folder-item.selected {
+  background: var(--folder-selected);
+  color: var(--folder-selected-text);
+  font-weight: 500;
+}
+
+.folder-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.folder-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#save-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+#save-btn:disabled {
+  background: var(--border);
+  color: var(--label-muted);
+  cursor: default;
+}
+
+#save-btn:not(:disabled):hover {
+  opacity: 0.85;
+}
+
+/* ── Main grid ──────────────────────────────────────────────── */
+
+#main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 40px 80px;
+  gap: 32px;
+}
+
+#folder-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--label-color);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+#folder-label::after {
+  content: "⚙";
+  font-size: 12px;
+  color: var(--label-muted);
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+#folder-label:hover::after {
+  opacity: 1;
+}
+
+#tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 112px);
+  gap: 24px 16px;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* ── Tile ───────────────────────────────────────────────────── */
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--label-color);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tile-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  background: var(--tile-bg);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  flex-shrink: 0;
+}
+
+.tile:hover .tile-icon {
+  transform: scale(1.06);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15), 0 0 0 0.5px rgba(0,0,0,0.06);
+}
+
+.tile:active .tile-icon {
+  transform: scale(0.96);
+}
+
+.tile-icon img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+/* Letter fallback shown when favicon fails */
+.tile-icon .letter {
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.tile-label {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--label-color);
+  text-align: center;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
